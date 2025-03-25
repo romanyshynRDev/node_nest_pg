@@ -1,5 +1,7 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { AutoIncrement, Column, DataType, Model, Table } from "sequelize-typescript";
+import { AutoIncrement, BelongsToMany, Column, DataType, Model, Table } from "sequelize-typescript";
+import { User } from "src/users/user.model";
+import { UserRoles } from './user-roles.model';
 
 
 interface RoleControllerAttr {
@@ -8,7 +10,7 @@ interface RoleControllerAttr {
 }
 
 @Table({ tableName: 'roles' })
-export class Roles extends Model<Roles,RoleControllerAttr> {
+export class Roles extends Model<Roles, RoleControllerAttr> {
     @ApiProperty({ example: '1', description: 'User role' })
     @Column({ type: DataType.INTEGER, unique: true, autoIncrement: true, primaryKey: true })
     declare id: number
@@ -20,4 +22,8 @@ export class Roles extends Model<Roles,RoleControllerAttr> {
     @ApiProperty({ example: 'ADMINISTRATION', description: "Role description" })
     @Column({ type: DataType.STRING, allowNull: false })
     description: string
+
+    @BelongsToMany(() => User, () => UserRoles)
+    roles: User[]
+
 }
