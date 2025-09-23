@@ -1,6 +1,11 @@
+import { readFile } from 'fs';
 import { NestFactory } from "@nestjs/core"
 import { AppModule } from "./app.module"
 import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger"
+
+const fs = require('node:fs')
+fs.writeFile
+
 
 async function start() {
     const PORT = process.env.PORT || 5000 // Change to 5000

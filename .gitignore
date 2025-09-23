@@ -5,6 +5,7 @@
 /env
 /development.env
 /production.env
+/documentation.txt
 # Logs
 logs
 *.log
