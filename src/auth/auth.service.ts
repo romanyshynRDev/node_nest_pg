@@ -1,6 +1,6 @@
 import { HttpException, HttpStatus, Injectable, Post, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { createUserDto } from 'src/users/dto/create-user-dto';
+import { CreateUserDto } from 'src/users/dto/create-user-dto';
 import { UsersService } from 'src/users/users.service';
 import * as bcrypt from 'bcryptjs'
 import { User } from 'src/users/user.model';
@@ -12,12 +12,13 @@ export class AuthService {
 
     }
 
-    async login(userDto: createUserDto) {
+    async login(userDto: CreateUserDto) {
         const user = await this.validateUser(userDto)
         return this.generateToken(user)
     }
 
-    async registration(userDto: createUserDto) {
+    async registration(userDto: CreateUserDto) {
+        console.log(userDto)
         const candidate = await this.userService.getUserByEmail(userDto.email)
         if (candidate) {
             throw new HttpException('candidate with that email already exist', HttpStatus.BAD_REQUEST)
@@ -34,20 +35,24 @@ export class AuthService {
         }
     }
 
-    private async validateUser(userDto: createUserDto) {
-        const user = await this.userService.getUserByEmail(userDto.email)
+    private async validateUser(userDto: CreateUserDto) {
+console.log(userDto)
+        if (!userDto || !userDto.email || !userDto.password) {
+            throw new HttpException('Email and password are required', HttpStatus.BAD_REQUEST);
+        }
+
+        const user = await this.userService.getUserByEmail(userDto.email);
 
         if (!user) {
-            throw new HttpException('candidate with that email not exist', HttpStatus.BAD_REQUEST)
+            throw new HttpException('User with that email does not exist', HttpStatus.BAD_REQUEST);
         }
 
-        const passwordEquals = await bcrypt.compare(userDto.password, user.password)
+        const passwordEquals = await bcrypt.compare(userDto.password, user.password);
 
-        if (user && passwordEquals) {
-            return user
+        if (passwordEquals) {
+            return user;
         }
-
-        return user
-        // throw new UnauthorizedException({ message: 'Incorrect email or password' }) 1:00hour
+        return user;
+        throw new UnauthorizedException({ message: 'Incorrect email or password' });
     }
 }

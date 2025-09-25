@@ -2,6 +2,7 @@ import { readFile } from 'fs';
 import { NestFactory } from "@nestjs/core"
 import { AppModule } from "./app.module"
 import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger"
+import { JwtAuthGuard } from './auth/jwt.auth.guard';
 
 const fs = require('node:fs')
 fs.writeFile
@@ -20,7 +21,7 @@ async function start() {
 
     const document = SwaggerModule.createDocument(app, config)
     SwaggerModule.setup('/api/docs', app, document)
-
+    
     await app.listen(PORT, () => { console.log('PORT', PORT) })
 }
 start()

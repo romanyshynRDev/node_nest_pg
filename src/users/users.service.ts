@@ -1,4 +1,4 @@
-import { createUserDto } from './dto/create-user-dto';
+import { CreateUserDto } from './dto/create-user-dto';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { User } from './user.model';
 import { InjectModel } from '@nestjs/sequelize';
@@ -11,9 +11,9 @@ export class UsersService {
 
     }
     //Used only to create a user
-    async createUser(dto: createUserDto) {
+    async createUser(dto: CreateUserDto) {
         const user = await this.userRepository.create(dto)
-        const role = await this.roleService.getRoleByValue('USER')
+        const role = await this.roleService.getRoleByValue('ADMIN')
         if (!role) {
             throw new HttpException('Role USER not found', HttpStatus.INTERNAL_SERVER_ERROR);
         }

@@ -7,7 +7,6 @@ export class JwtAuthGuard implements CanActivate {
 
     canActivate(context: ExecutionContext): boolean {
         const request = context.switchToHttp().getRequest();
-
         try {
             const authHeader = request.headers.authorization;
             if (!authHeader) {
@@ -17,7 +16,8 @@ export class JwtAuthGuard implements CanActivate {
             if (bearer !== 'Bearer' || !token) {
                 throw new UnauthorizedException({ message: 'User is not authorized' });
             }
-            const user = this.jwtService.verify(token, { secret: process.env.PRIVATE_KEY });
+            console.log('user')
+            const user = this.jwtService.verify(token);
             request.user = user;
             return true;
         } catch {
