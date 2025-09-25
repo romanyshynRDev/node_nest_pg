@@ -17,13 +17,13 @@ export class Roles extends Model<Roles, RoleControllerAttr> {
 
     @ApiProperty({ example: 'ADMIN', description: "Admin role email" })
     @Column({ type: DataType.STRING, unique: true, allowNull: false })
-    value: string
+    declare value: string
 
     @ApiProperty({ example: 'ADMINISTRATION', description: "Role description" })
     @Column({ type: DataType.STRING, allowNull: false })
-    description: string
+    declare description: string
 
     @BelongsToMany(() => User, () => UserRoles)
-    roles: User[]
+    declare roles: User[]
 
 }
