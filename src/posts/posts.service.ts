@@ -8,8 +8,9 @@ import { createPostDto } from './dto/create.post.dto';
 @Injectable()
 export class PostsService {
     constructor(@InjectModel(Post) private postRepository: typeof Post, private fileService: FilesService) { }
-    
-    async create(dto:createPostDto, image:any) {
+
+    async create(dto: createPostDto, image: any) {
+        console.log('image =>', dto, image)
         const fileName = await this.fileService.createFile(image)
         const post = await this.postRepository.create({ ...dto, image: fileName });
         return post

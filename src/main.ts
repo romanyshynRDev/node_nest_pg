@@ -1,9 +1,7 @@
-import { readFile } from 'fs';
 import { NestFactory } from "@nestjs/core"
 import { AppModule } from "./app.module"
 import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger"
-import { JwtAuthGuard } from './auth/jwt.auth.guard';
-import { ValidationPipe } from './pipes/validation.pipe';
+import { ValidationPipe } from '@nestjs/common';
 
 const fs = require('node:fs')
 fs.writeFile
